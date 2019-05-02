@@ -1,0 +1,74 @@
+================================== DIA 1 ==================================
+
+1) Introdução
+
+2) Preparação do ambiente de desenvolvimento com VTK
+
+   2.1) Tool chain
+
+   2.2) Git
+
+   2.3) Qt
+
+   2.4) CMake
+
+3) Compilando o VTK
+
+   3.1) Configuração
+
+   3.2) Build
+
+   3.3) Deploy
+
+4) Criando aplicações VTK com foco em geociências
+
+   4.1) Criando um aplicativo VTK elementar
+
+       4.1.1) Gerenciando a memória com ponteiros inteligentes
+
+       4.1.2) O modelo de visualização do VTK: pipeline
+
+       4.1.3) Hello World! Uma janela Qt com um canvas VTK
+
+       4.1.4) Adicionar uma rosa-dos-ventos para orientação do usuário
+
+================================== DIA 2 ==================================
+
+   4.2) Dados de poço: carregar e visualizar uma nuvem de pontos
+
+       4.2.1) Variáveis contínuas: associando valores ao suporte amostral
+
+       4.2.2) Variáveis categóricas: a tabela de cores
+
+   4.3) Mapas: carregar e visualizar um grid 2D
+
+       4.3.1) Valores nulos e locais não amostrados: o filtro
+
+   4.4) Volumes sísmicos: carregar e visualizar um cubo **** não é essencial para o plug-in, será abordado havendo tempo no 2º dia ****
+
+       4.4.1) Seções inline, crossline e z-slice.
+
+       4.4.2) Subamostragem
+
+================================== DIA 3 ==================================
+
+   4.5) Estruturas de geometria complexa
+
+       4.5.1) Trajetórias de poço, limites políticos e outras linhas
+
+       4.5.2) Horizontes, falhas, modelos de terreno e outras superfícies
+
+   4.6) Interagindo com o modelo 3D: picking e probing
+
+============================================ INFRAESTRUTURA ===================================
+
+* Idealmente 01 computador por participante (lembrar de que deve haver +1 para o Cláudio)
+* Projetor para os slides
+* O computador do instrutor deve ter as mesmas ferramentas que os participantes terão.
+
+Quais os programas que serão usados nas aulas e precisam ser instalados nas máquinas?
+*Visual Studio 2015
+*Qt Creator 4.8.2
+*Cmake 3
+	
+	
