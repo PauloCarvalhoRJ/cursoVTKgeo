@@ -1,2 +1,2 @@
-# cursoVTKgeo
-Curso de VTK com ênfase em geociências
+﻿# cursoVTKgeo
+Curso de visualização científica com VTK com ênfase em geociências.
