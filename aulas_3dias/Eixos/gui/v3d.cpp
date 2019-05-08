@@ -14,11 +14,6 @@ V3D::V3D()
 {
     this->setupUi(this);
 
-    // !!! nao use vtkSmartPointer porque serah gerenciado pelo Qt !!!
-    QVTKOpenGLWidget* vtkwidget = new QVTKOpenGLWidget;
-
-    this->setupUi(this);
-
     //Modelo 1: esfera
     vtkSmartPointer<vtkActor> sphereActor = vtkSmartPointer<vtkActor>::New();
     {
@@ -41,10 +36,10 @@ V3D::V3D()
 
     // Cria uma render window: a saída do backend (OpenGL neste caso) em uma janela do sistema gráfico (Qt e afins).
     vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
-    vtkwidget->SetRenderWindow( renderWindow );
+    this->qvtkOpenGLWidget->SetRenderWindow( renderWindow );
 
     // Liga o renderer aa interface grafica (Qt)
-    vtkwidget->GetRenderWindow()->AddRenderer(renderer);
+    this->qvtkOpenGLWidget->GetRenderWindow()->AddRenderer(renderer);
 
     // Adiciona eixos de orientacao
     // O smart pointer do widget VTK (HUD) eh uma variavel membro para que ele
@@ -56,7 +51,7 @@ V3D::V3D()
         m_vtkAxesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
         m_vtkAxesWidget->SetOutlineColor(0.9300, 0.5700, 0.1300);
         m_vtkAxesWidget->SetOrientationMarker(axes);
-        m_vtkAxesWidget->SetInteractor(vtkwidget->GetRenderWindow()->GetInteractor());
+        m_vtkAxesWidget->SetInteractor( this->qvtkOpenGLWidget->GetRenderWindow()->GetInteractor() );
         m_vtkAxesWidget->SetViewport(0.0, 0.0, 0.2, 0.2);
         m_vtkAxesWidget->SetEnabled(1);
         m_vtkAxesWidget->InteractiveOn();
@@ -65,7 +60,5 @@ V3D::V3D()
     // adjusts view so everything fits in the screen
     renderer->ResetCamera();
 
-    //adiciona o widget VTK ao layout da janela (ver no Qt Designer)
-    this->frmConteudo->layout()->addWidget( vtkwidget );
 
 }
