@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "viewer3d/view3dwidget.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -19,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter_2->setSizes( QList<int>() << 700 << 100 );
 
     //Mostra o widget 3D.
-    //ui->frmContent->layout()->addWidget( new View3DWidget( this ) );
+    ui->frmContent->layout()->addWidget( new View3DWidget( this ) );
 }
 
 MainWindow::~MainWindow()
