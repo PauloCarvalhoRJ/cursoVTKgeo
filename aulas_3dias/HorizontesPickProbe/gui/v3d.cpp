@@ -1,6 +1,7 @@
 #include "v3d.h"
 
 #include "misc/util.h"
+#include "gui/v3dMouseInteractorStyle.h"
 
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkPolyDataMapper.h>
@@ -21,6 +22,8 @@
 #include <vtkDataSetMapper.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkQuad.h>
+#include <vtkBalloonRepresentation.h>
+#include <vtkBalloonWidget.h>
 
 #include <QVTKOpenGLWidget.h>
 
@@ -60,6 +63,22 @@ V3D::V3D()
     // Liga o renderer aa interface grafica (Qt)
     this->qvtkOpenGLWidget->GetRenderWindow()->AddRenderer(renderer);
 
+//    // Cria um widget (HUD no painel 3D) para mostrar um texto descritivo do ator (horizonte) que foi clicado.
+    ///**** os balloons nao estao funcionando com a nova classe de janela Qt-VTK (bug ainda nao resolvido)
+//    vtkSmartPointer<vtkBalloonRepresentation> balloonRep = vtkSmartPointer<vtkBalloonRepresentation>::New();
+//    balloonRep->SetBalloonLayoutToImageRight();
+//    vtkSmartPointer<vtkBalloonWidget> balloonWidget = vtkSmartPointer<vtkBalloonWidget>::New();
+//    balloonWidget->SetInteractor( this->qvtkOpenGLWidget->GetRenderWindow()->GetInteractor() );
+//    balloonWidget->SetRepresentation(balloonRep);
+//    // Associa textos descritivos a cada ator (horizonte)
+//    int contaHorizonte = 1;
+//    for( vtkSmartPointer<vtkActor>& ator : atoresHorizontes ){
+//        vtkStdString texto( "Horizonte #" + QString::number( contaHorizonte ).toStdString() );
+//        balloonWidget->AddBalloon(ator, texto, NULL);
+//        ++contaHorizonte;
+//    }
+//    balloonWidget->EnabledOn();
+
     // Adiciona eixos de orientacao
     // O smart pointer do widget VTK (HUD) eh uma variavel membro para que ele
     // nao destrua o objeto ao sair deste escopo, senao daria segfault.
@@ -75,6 +94,11 @@ V3D::V3D()
         m_vtkAxesWidget->SetEnabled(1);
         m_vtkAxesWidget->InteractiveOn();
     }
+
+    // Personaliza os eventos tratados pelo interador atraves de uma extensao da classe vtkInteractorStyleTrackballCamera.
+    vtkSmartPointer<v3dMouseInteractorStyle> interactorStyle = vtkSmartPointer<v3dMouseInteractorStyle>::New();
+    interactorStyle->SetDefaultRenderer(renderer);
+    this->qvtkOpenGLWidget->GetRenderWindow()->GetInteractor()->SetInteractorStyle( interactorStyle );
 
     //ajusta a camera de forma que toda a cena caiba na janela.
     renderer->ResetCamera();
