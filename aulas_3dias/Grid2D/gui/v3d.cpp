@@ -80,20 +80,18 @@ V3D::V3D()
         }
 
         // Criar um grid VTK (corner-point, explicit geometry)
-        // Mas como a GSLib grids sao cell-centered, entao eh necessario adicionar
-        // um ponto extra em todas as direcoes
         vtkSmartPointer<vtkStructuredGrid> structuredGrid = vtkSmartPointer<vtkStructuredGrid>::New();
         vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-        for(int j = 0; j <= nY; ++j)
-            for(int i = 0; i <= nX; ++i)
+        for(int j = 0; j < nY; ++j)
+            for(int i = 0; i < nX; ++i)
                 points->InsertNextPoint( X0frame + i * dX,
                                          Y0frame + j * dY,
                                          0.0 );
-        structuredGrid->SetDimensions( nX+1, nY+1, 1 );
+        structuredGrid->SetDimensions( nX, nY, 1 );
         structuredGrid->SetPoints(points);
 
-        // Atribuir os valores aas celulas do grid
-        structuredGrid->GetCellData()->SetScalars( values );
+        // Atribuir os valores aos vertices do grid
+        structuredGrid->GetPointData()->SetScalars( values );
 
         // Cria uma transformacao para rotacionar o grid em torno do centro da primeira celula
         vtkSmartPointer<vtkTransform> xform = vtkSmartPointer<vtkTransform>::New();

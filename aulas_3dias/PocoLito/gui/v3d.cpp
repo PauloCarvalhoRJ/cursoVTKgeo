@@ -83,13 +83,6 @@ V3D::V3D()
         poly->GetCellData()->SetScalars( values );
         poly->GetCellData()->SetActiveScalars("values");
 
-        // Transforma a linha em um tubo
-        vtkSmartPointer<vtkTubeFilter> tubeFilter = vtkSmartPointer<vtkTubeFilter>::New();
-        tubeFilter->SetInputData( poly );
-        tubeFilter->SetRadius(10); //default eh .5
-        tubeFilter->SetNumberOfSides(50);
-        tubeFilter->Update();
-
         // Cria uma tabela de cores para todos os codigos possiveis da variavel categorica.
         std::vector< std::pair< uint, QColor > > tabelaCategoriaCores = { {  1, QColor( Qt::yellow ) },
                                                                           {  2, QColor( Qt::blue ) },
@@ -110,7 +103,7 @@ V3D::V3D()
 
         // Cria um maper para objetos do tipo poly data (poligonais)
         vtkSmartPointer<vtkPolyDataMapper> tubeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-        tubeMapper->SetInputConnection(tubeFilter->GetOutputPort());
+        tubeMapper->SetInputData(poly);
         tubeMapper->SetLookupTable(lut);
         tubeMapper->SetScalarModeToUseCellData();
         tubeMapper->SetColorModeToMapScalars();
@@ -120,6 +113,7 @@ V3D::V3D()
         pocoActor = vtkSmartPointer<vtkActor>::New();
         pocoActor->GetProperty()->SetOpacity(0.7);
         pocoActor->SetMapper(tubeMapper);
+        pocoActor->GetProperty()->SetLineWidth( 5.0 );
     }
 
     // O renderer para as gerar as chamadas ao backend (OpenGL ou Mesa)

@@ -29,7 +29,7 @@ V3D::V3D() :
     m_nX( 107 ),
     m_nY( 260 ),
     m_nZ( 10 ),
-    m_delta( 0 )
+    m_zSlice( 0 )
 {
     // Monta a GUI
     this->setupUi(this);
@@ -56,7 +56,7 @@ V3D::V3D() :
         double dZ = 1.0;
         double X0frame = X0 - dX/2.0;
         double Y0frame = Y0 - dY/2.0;
-        double Z0frame = X0 - dX/2.0;
+        double Z0frame = Z0 - dX/2.0;
         int numCelulas = nX * nY * nZ;
 
         //max e min dos valores a serem exibidos
@@ -167,8 +167,8 @@ void V3D::atualizaReamostrador()
                                 m_nX,
                                 0,
                                 m_nY,
-                                0,
-                                m_nZ - m_delta );
+                                m_zSlice,
+                                m_zSlice );
     m_reamostradorGrid->Update();
 
     // Redesenha a cena
@@ -177,16 +177,16 @@ void V3D::atualizaReamostrador()
 
 void V3D::onMenos()
 {
-    ++m_delta;
-    if( m_delta > m_nZ )
-        m_delta = m_nZ;
+    --m_zSlice;
+    if( m_zSlice < 0 )
+        m_zSlice = 0;
     atualizaReamostrador();
 }
 
 void V3D::onMais()
 {
-    --m_delta;
-    if( m_delta < 0 )
-        m_delta = 0;
+    ++m_zSlice;
+    if( m_zSlice > m_nZ )
+        m_zSlice = m_nZ;
     atualizaReamostrador();
 }

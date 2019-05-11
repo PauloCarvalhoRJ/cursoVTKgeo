@@ -60,6 +60,7 @@ V3D::V3D()
         // Cria um ator (propriedades visuais, como a cor)
         pointCloudActor->SetMapper(pointCloudMapper);
         pointCloudActor->GetProperty()->SetPointSize(3);
+        pointCloudActor->GetProperty()->SetRenderPointsAsSpheres( true );
     }
 
     // O renderer para as gerar as chamadas ao backend (OpenGL ou Mesa)

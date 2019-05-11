@@ -8,7 +8,8 @@
 /*! The available color tables. */
 enum class ColorTable : uint {
     RAINBOW = 0, /*!< The classic color table mapping low values to bluer hues and high values to redder hues. */
-    SEISMIC = 1  /*!< Color table mapping low values to bluer hues and high values to redder hues with white in the middle. */
+    SEISMIC = 1,  /*!< Color table mapping low values to bluer hues and high values to redder hues with white in the middle. */
+    WINTER_IS_COMING = 2 /*!< Color table mapping low values to whiter hues and high values to bluer hues. */
 };
 
 class vtkLookupTable;
@@ -45,6 +46,9 @@ private:
 
     /** The color table mapping lower values to bluer hues and high values to redder hues with white in the middle. */
     static vtkSmartPointer<vtkLookupTable> getSeismic( double min, double max );
+
+    /** The color table mapping lower values to witer hues and high values to bluer hues. */
+    static vtkSmartPointer<vtkLookupTable> getWinter( double min, double max );
 };
 
 #endif // UTIL_H

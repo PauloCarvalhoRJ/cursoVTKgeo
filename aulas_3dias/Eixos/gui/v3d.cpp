@@ -8,6 +8,7 @@
 #include <vtkAxesActor.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkOrientationMarkerWidget.h>
+#include <vtkCubeSource.h>
 #include <QVTKOpenGLWidget.h>
 
 V3D::V3D()
@@ -45,12 +46,22 @@ V3D::V3D()
     // O smart pointer do widget VTK (HUD) eh uma variavel membro para que ele
     // nao destrua o objeto ao sair deste escopo, senao daria segfault.
     {
-        // Este ator eh uma comodidate do VTK (cria eixos prontos).
-        // A bussola poderia ser feita com qualquer ator.
-        vtkSmartPointer<vtkAxesActor> axes = vtkSmartPointer<vtkAxesActor>::New();
+
+        // Cria um ator que representa um cubo
+        vtkSmartPointer<vtkActor> actorCubo = vtkSmartPointer<vtkActor>::New();
+        {
+            // Cria um source que gera cubos.
+            vtkSmartPointer<vtkCubeSource> cubeSource = vtkSmartPointer<vtkCubeSource>::New();
+            // Cria um mapper para o tipo de dado retornado pelo vtkCubeSource.
+            vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+            mapper->SetInputConnection(cubeSource->GetOutputPort());
+            // passa o mapper para o ator do cubo
+            actorCubo->SetMapper(mapper);
+        }
+
         m_vtkAxesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
         m_vtkAxesWidget->SetOutlineColor(0.9300, 0.5700, 0.1300);
-        m_vtkAxesWidget->SetOrientationMarker(axes);
+        m_vtkAxesWidget->SetOrientationMarker(actorCubo);
         m_vtkAxesWidget->SetInteractor( this->qvtkOpenGLWidget->GetRenderWindow()->GetInteractor() );
         m_vtkAxesWidget->SetViewport(0.0, 0.0, 0.2, 0.2);
         m_vtkAxesWidget->SetEnabled(1);

@@ -50,6 +50,10 @@ V3D::V3D()
         double dY = 100.0;
         int numVertices = nX * nY;
 
+        //max e min dos valores a serem exibidos
+        double max = -std::numeric_limits<double>::max();
+        double min = -max;
+
         // Carrega a tabela de valores do arquivo
         std::vector< std::vector< double > > dados = Util::loadGEOEAS( path_arq_dados );
 
@@ -65,6 +69,9 @@ V3D::V3D()
                 // valor de profundidade
                 double value = dados[indiceLinear][indiceVariavel];
                 values->InsertNextValue( value );
+                //atualiza max e min
+                max = std::max( max, value );
+                min = std::min( min, value );
             }
         }
 
@@ -106,10 +113,18 @@ V3D::V3D()
         // Passa as coordenadas dos vertices para o grid
         unstructuredGrid->SetPoints(quadVertexes);
 
+        // Atribuir os valores aos vertices do grid
+        unstructuredGrid->GetPointData()->SetScalars( values );
+
+        // Tabela de cor
+        vtkSmartPointer<vtkLookupTable> lut = Util::getColorTable( ColorTable::RAINBOW, min, max );
+
         // Cria um mapper apropriado para um vtkUnstructuredGrid
         vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
         mapper->SetInputData( unstructuredGrid );
         mapper->Update();
+        mapper->SetLookupTable(lut);
+        mapper->SetScalarRange(min, max);
 
         // Cria um actor contendo o modelo inteiro.
         superficieActor = vtkSmartPointer<vtkActor>::New();

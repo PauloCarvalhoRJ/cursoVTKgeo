@@ -39,23 +39,33 @@ void v3dMouseInteractorStyle::OnLeftButtonUp()
         // Obter qual ator foi pickado.
         std::cout << "Ponteiro do ator: " << picker->GetActor() << std::endl;
 
-        // Criar uma pequena esfera para assinalar o local onde o pick ocorreu.
-        vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
-        sphereSource->SetCenter(pos[0], pos[1], pos[2]);
-        sphereSource->SetRadius(100.0);
+        // Se a esfera indicadora ainda nao existe.
+        if( ! m_sphereSource ) {
 
-        // Cria um mapper para a pequena esfera
-        vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-        mapper->SetInputConnection(sphereSource->GetOutputPort());
+            // Criar uma pequena esfera para assinalar o local onde o pick ocorreu.
+            m_sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+            m_sphereSource->SetCenter(pos[0], pos[1], pos[2]);
+            m_sphereSource->SetRadius(100.0);
 
-        // Cria um ator para a pequena esfera (atribui cor vermelha)
-        vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-        actor->GetProperty()->SetColor(1.0, 0.0, 0.0);
-        actor->SetMapper(mapper);
+            // Cria um mapper para a pequena esfera
+            vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+            mapper->SetInputConnection(m_sphereSource->GetOutputPort());
 
-        // Adiciona a pequena esfera aa cena.
-        //this->GetInteractor()->GetRenderWindow()->GetRenderers()->GetDefaultRenderer()->AddActor(actor);
-        this->GetDefaultRenderer()->AddActor(actor);
+            // Cria um ator para a pequena esfera (atribui cor vermelha)
+            vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+            actor->GetProperty()->SetColor(1.0, 0.0, 0.0);
+            actor->SetMapper(mapper);
+
+            // Adiciona a pequena esfera aa cena.
+            //this->GetInteractor()->GetRenderWindow()->GetRenderers()->GetDefaultRenderer()->AddActor(actor);
+            this->GetDefaultRenderer()->AddActor(actor);
+
+        } else { //se a esfera indicadora jah existe, apenas atualiza sua posicao
+
+            m_sphereSource->SetCenter(pos[0], pos[1], pos[2]);
+            m_sphereSource->Update();
+
+        }
     }
 
     m_isLBdown = false;

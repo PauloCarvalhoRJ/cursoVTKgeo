@@ -80,7 +80,7 @@ V3D::V3D()
         pointCloud->GetPointData()->SetActiveScalars("values");
 
         // Cria uma tabela de cores do tipo arco-iris entre os valores minimo e maximo da variavel.
-        vtkSmartPointer<vtkLookupTable> lut = Util::getColorTable( ColorTable::RAINBOW, min, max);
+        vtkSmartPointer<vtkLookupTable> lut = Util::getColorTable( ColorTable::WINTER_IS_COMING, min, max);
 
         // Cria um mapper que mapeia vtkPolyData para primitivas geometricas
         vtkSmartPointer<vtkPolyDataMapper> pointCloudMapper = vtkSmartPointer<vtkPolyDataMapper>::New();

@@ -6,6 +6,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
+#include <vtkProperty.h>
 
 V3D::V3D()
 {
@@ -25,6 +26,7 @@ V3D::V3D()
         // O ator recebe as propriedades visuais do que se deseja desenhar
         // caso queiras dar uma cor, eh no ator que se faz.
         sphereActor->SetMapper(sphereMapper);
+        sphereActor->GetProperty()->SetColor( 0.0, 1.0, 1.0 );
     }
 
     // O renderer para as gerar as chamadas ao backend (OpenGL ou Mesa)

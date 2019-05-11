@@ -75,8 +75,8 @@ V3D::V3D()
         pointCloud->GetPointData()->SetActiveScalars("values");
 
         // Cria uma tabela de cores para todos os codigos possiveis da variavel categorica.
-        std::vector< std::pair< uint, QColor > > tabelaCategoriaCores = { { 1, QColor( Qt::yellow ).darker() },
-                                                                          { 2, QColor( Qt::cyan )            } };
+        std::vector< std::pair< uint, QColor > > tabelaCategoriaCores = { { 1, QColor( 165,  42, 42 ) },
+                                                                          { 2, QColor( 255, 165,  0 ) } };
         vtkSmartPointer<vtkLookupTable> lut = Util::getCategoricalColorTable( tabelaCategoriaCores );
 
         // Cria um mapper que mapeia vtkPolyData para primitivas geometricas

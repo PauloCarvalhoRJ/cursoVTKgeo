@@ -2,6 +2,9 @@
 #define V3DMOUSEINTERACTORSTYLE_H
 #include <vtkObjectFactory.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkSmartPointer.h>
+
+class vtkSphereSource;
 
 class v3dMouseInteractorStyle : public vtkInteractorStyleTrackballCamera
 {
@@ -19,6 +22,9 @@ protected:
 
     bool m_isDragging;
     bool m_isLBdown;
+
+    vtkSmartPointer<vtkSphereSource> m_sphereSource;
+
 };
 
 #endif

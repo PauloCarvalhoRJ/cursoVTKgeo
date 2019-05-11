@@ -40,9 +40,9 @@ V3D::V3D()
         uint indiceVariavel = 0;
 
         // Obter os parametros do grid (normalmente ha uma classe Grid com esses metadados)
-        int nX = 107;
-        int nY = 260;
-        int nZ = 10;
+        int nX = 134;
+        int nY = 95;
+        int nZ = 94;
         double X0 = 0.0;
         double Y0 = 0.0;
         double Z0 = 0.0;
@@ -51,7 +51,7 @@ V3D::V3D()
         double dZ = 1.0;
         double X0frame = X0 - dX/2.0;
         double Y0frame = Y0 - dY/2.0;
-        double Z0frame = X0 - dX/2.0;
+        double Z0frame = Z0 - dZ/2.0;
         int numCelulas = nX * nY * nZ;
 
         //max e min dos valores a serem exibidos

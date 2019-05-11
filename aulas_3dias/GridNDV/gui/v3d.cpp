@@ -30,8 +30,8 @@ V3D::V3D()
     double NDV = 0.0;
 
     //lambda para determinar se um valor eh nulo
-    auto fnIsNDV = [ NDV ]( double value ) {
-        return Util::almostEqual2sComplement( value, NDV, 1 );
+    auto fnIsNDV = []( double value ) {
+        return value > 50.0;
     };
 
     // Monta a GUI
@@ -99,23 +99,21 @@ V3D::V3D()
         }
 
         // Criar um grid VTK (corner-point, explicit geometry)
-        // Mas como a GSLib grids sao cell-centered, entao eh necessario adicionar
-        // um ponto extra em todas as direcoes
         vtkSmartPointer<vtkStructuredGrid> structuredGrid = vtkSmartPointer<vtkStructuredGrid>::New();
         vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-        for(int j = 0; j <= nY; ++j)
-            for(int i = 0; i <= nX; ++i)
+        for(int j = 0; j < nY; ++j)
+            for(int i = 0; i < nX; ++i)
                 points->InsertNextPoint( X0frame + i * dX,
                                          Y0frame + j * dY,
                                          0.0 );
-        structuredGrid->SetDimensions( nX+1, nY+1, 1 );
+        structuredGrid->SetDimensions( nX, nY, 1 );
         structuredGrid->SetPoints(points);
 
         // Atribuir os valores aas celulas do grid
-        structuredGrid->GetCellData()->SetScalars( values );
+        structuredGrid->GetPointData()->SetScalars( values );
 
         // Adiciona as flags de visibilidade
-        structuredGrid->GetCellData()->AddArray( visibilidade );
+        structuredGrid->GetPointData()->AddArray( visibilidade );
 
         // Cria uma transformacao para rotacionar o grid em torno do centro da primeira celula
         vtkSmartPointer<vtkTransform> xform = vtkSmartPointer<vtkTransform>::New();
@@ -133,17 +131,17 @@ V3D::V3D()
         vtkSmartPointer<vtkThreshold> threshold = vtkSmartPointer<vtkThreshold>::New();
         threshold->SetInputData(transformFilter->GetOutput());
         threshold->ThresholdByUpper(1); // Criterio: marcar aquelas cujo flag eh maior ou igual a 1.
-        threshold->SetInputArrayToProcess(0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_CELLS, "Visibility");
+        threshold->SetInputArrayToProcess(0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS, "Visibility");
         threshold->Update();
 
         // Tabela de cor
-        vtkSmartPointer<vtkLookupTable> lut = Util::getColorTable( ColorTable::RAINBOW, min, max );
+        vtkSmartPointer<vtkLookupTable> lut = Util::getColorTable( ColorTable::RAINBOW, 0.0, 50.0 );
 
         // Cria um mapper adequado para a saida do algoritmo vtkTransformFilter (que fez a rotacao do grid)
         vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
         mapper->SetInputConnection( threshold->GetOutputPort() );
         mapper->SetLookupTable(lut);
-        mapper->SetScalarRange(min, max);
+        mapper->SetScalarRange(0.0, 50.0);
         mapper->Update();
 
         // Finalmente, cria um ator VTK para tudo

@@ -24,7 +24,7 @@ protected:
     int m_nX;
     int m_nY;
     int m_nZ;
-    int m_delta;
+    int m_zSlice;
     vtkSmartPointer<vtkOrientationMarkerWidget> m_vtkAxesWidget;
     vtkSmartPointer<vtkExtractGrid> m_reamostradorGrid;
     void atualizaReamostrador();
