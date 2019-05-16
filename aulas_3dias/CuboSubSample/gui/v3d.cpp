@@ -42,9 +42,9 @@ V3D::V3D() :
         uint indiceVariavel = 0;
 
         // Obter os parametros do grid (normalmente ha uma classe Grid com esses metadados)
-        int nX = 107;
-        int nY = 260;
-        int nZ = 10;
+        int nX = 134;
+        int nY = 95;
+        int nZ = 94;
         double X0 = 0.0;
         double Y0 = 0.0;
         double Z0 = 0.0;

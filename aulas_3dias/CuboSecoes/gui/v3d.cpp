@@ -56,7 +56,7 @@ V3D::V3D() :
         double dZ = 1.0;
         double X0frame = X0 - dX/2.0;
         double Y0frame = Y0 - dY/2.0;
-        double Z0frame = X0 - dX/2.0;
+        double Z0frame = Z0 - dZ/2.0;
         int numCelulas = nX * nY * nZ;
 
         //max e min dos valores a serem exibidos

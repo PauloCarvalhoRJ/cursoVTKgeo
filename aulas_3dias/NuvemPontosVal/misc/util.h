@@ -4,6 +4,7 @@
 #include <vector>
 #include <QString>
 #include <vtkSmartPointer.h>
+#include <QColor>
 
 /*! The available color tables. */
 enum class ColorTable : uint {
@@ -19,6 +20,12 @@ class vtkLookupTable;
 class Util
 {
 public:
+
+    static vtkSmartPointer<vtkLookupTable> createGenericColorTable(
+              std::vector< std::pair< double, QColor > > pontosControle,
+              double min,
+              double max
+            );
 
     /**
      * @brief Loads data from a GEO-EAS file.

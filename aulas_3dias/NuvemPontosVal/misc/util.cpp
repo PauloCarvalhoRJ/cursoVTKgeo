@@ -10,6 +10,39 @@
 
 #include <iostream>
 
+vtkSmartPointer<vtkLookupTable> Util::createGenericColorTable(std::vector<std::pair<double, QColor> > pontosControle, double min, double max)
+{
+    size_t tableSize = 32;
+
+    //create a color interpolator object
+    vtkSmartPointer<vtkColorTransferFunction> ctf =
+            vtkSmartPointer<vtkColorTransferFunction>::New();
+    ctf->SetColorSpaceToRGB();
+
+    for( const std::pair<double, QColor>& pontoControle : pontosControle ){
+        ctf->AddRGBPoint(pontoControle.first,
+                         pontoControle.second.redF(),
+                         pontoControle.second.greenF(),
+                         pontoControle.second.blueF()
+                         );
+    }
+
+    //create the color table object
+    vtkSmartPointer<vtkLookupTable> lut = vtkSmartPointer<vtkLookupTable>::New();
+    lut->SetTableRange(min, max);
+    lut->SetNumberOfTableValues(tableSize);
+    for(size_t i = 0; i < tableSize; ++i)
+    {
+        double *rgb;
+        rgb = ctf->GetColor(static_cast<double>(i)/tableSize);
+        lut->SetTableValue(i, rgb[0], rgb[1], rgb[2]);
+    }
+    lut->SetRampToLinear();
+    lut->Build();
+
+    return lut;
+}
+
 std::vector<std::vector<double> > Util::loadGEOEAS(const QString path)
 {
     std::vector<std::vector<double> > data;

@@ -84,12 +84,12 @@ V3D::V3D()
         // um ponto extra em todas as direcoes
         vtkSmartPointer<vtkStructuredGrid> structuredGrid = vtkSmartPointer<vtkStructuredGrid>::New();
         vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-        for(int j = 0; j <= nY; ++j)
-            for(int i = 0; i <= nX; ++i)
+        for(int j = 0; j < nY; ++j)
+            for(int i = 0; i < nX; ++i)
                 points->InsertNextPoint( X0frame + i * dX,
                                          Y0frame + j * dY,
                                          0.0 );
-        structuredGrid->SetDimensions( nX+1, nY+1, 1 );
+        structuredGrid->SetDimensions( nX, nY, 1 );
         structuredGrid->SetPoints(points);
 
         // Atribuir os valores aas celulas do grid

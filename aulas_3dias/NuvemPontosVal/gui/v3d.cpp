@@ -13,6 +13,7 @@
 #include <vtkProperty.h>
 #include <vtkFloatArray.h>
 #include <vtkPointData.h>
+#include <vtkScalarBarActor.h>
 #include <vtkLookupTable.h>
 
 
@@ -30,6 +31,7 @@ V3D::V3D()
 
     //se o usuario nao cancelou, monta um ator com os dados do arquivo
     vtkSmartPointer<vtkActor> pointCloudActor = vtkSmartPointer<vtkActor>::New();
+    vtkSmartPointer<vtkScalarBarActor> scalarBarActor = vtkSmartPointer<vtkScalarBarActor>::New();
     if( ! path_arq_dados.isEmpty() ){
         int indiceCoordX = 1;
         int indiceCoordY = 2;
@@ -80,7 +82,10 @@ V3D::V3D()
         pointCloud->GetPointData()->SetActiveScalars("values");
 
         // Cria uma tabela de cores do tipo arco-iris entre os valores minimo e maximo da variavel.
-        vtkSmartPointer<vtkLookupTable> lut = Util::getColorTable( ColorTable::RAINBOW, min, max);
+        std::vector< std::pair< double, QColor > > pontosControle = {{ 0.0, Qt::white },
+                                                                     { 0.5, Qt::red },
+                                                                     { 1.0, Qt::blue }};
+        vtkSmartPointer<vtkLookupTable> lut = Util::createGenericColorTable( pontosControle, min, max);
 
         // Cria um mapper que mapeia vtkPolyData para primitivas geometricas
         vtkSmartPointer<vtkPolyDataMapper> pointCloudMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -94,11 +99,17 @@ V3D::V3D()
         // Cria um ator (propriedades visuais, como a cor)
         pointCloudActor->SetMapper(pointCloudMapper);
         pointCloudActor->GetProperty()->SetPointSize(3);
+
+        // Cria o ator da escala de cores
+        scalarBarActor->SetLookupTable( lut );
+        scalarBarActor->SetTitle("teor de cobre (ppm)");
+        scalarBarActor->SetNumberOfLabels( 4 );
     }
 
     // O renderer para as gerar as chamadas ao backend (OpenGL ou Mesa)
     vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
     renderer->AddActor( pointCloudActor);
+    renderer->AddActor2D( scalarBarActor );
 
     // Cria uma render window: a saída do backend (OpenGL neste caso) em uma janela do sistema gráfico (Qt e afins).
     vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
